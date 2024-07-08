@@ -1,4 +1,10 @@
-import { eachMonthOfInterval, endOfYear, format, startOfYear } from 'date-fns';
+import {
+  eachMonthOfInterval,
+  eachYearOfInterval,
+  endOfYear,
+  format,
+  startOfYear,
+} from 'date-fns';
 import { ru } from 'date-fns/locale';
 
 export const MONTHS = eachMonthOfInterval({
@@ -6,23 +12,43 @@ export const MONTHS = eachMonthOfInterval({
   end: endOfYear(new Date()),
 }).map((month) => format(month, 'LLLL', { locale: ru }));
 
-export function getYearsFromCurrentTo(endYear = 2020) {
-  const currentYear = new Date().getFullYear();
-  const years = [];
+export function getYearsFromCurrentTo(
+  minYear = 1920,
+  maxYear = new Date().getFullYear(),
+) {
+  const years = eachYearOfInterval({
+    start: startOfYear(new Date(minYear, 0, 1)),
+    end: endOfYear(new Date(maxYear, 11, 31)),
+  });
 
-  for (let year = currentYear; year >= endYear; year--) {
-    years.push(year);
-  }
-
-  return years;
+  return years.map((date) => date.getFullYear()).reverse();
 }
 
-export const formatInputValue = (value: string) => {
-  const onlyNums = value.replace(/\D/g, '');
-  if (onlyNums.length <= 2) return onlyNums;
-  if (onlyNums.length <= 4)
-    return `${onlyNums.slice(0, 2)}.${onlyNums.slice(2, 4)}`;
-  return `${onlyNums.slice(0, 2)}.${onlyNums.slice(2, 4)}.${onlyNums.slice(4, 8)}`;
+export const formatDateString = (formatDate: string): string => {
+  if (formatDate.length > 8) {
+    formatDate = formatDate.slice(0, 8);
+  }
+
+  if (formatDate.length > 2) {
+    formatDate = formatDate.slice(0, 2) + '.' + formatDate.slice(2);
+  }
+  if (formatDate.length > 5) {
+    formatDate = formatDate.slice(0, 5) + '.' + formatDate.slice(5);
+  }
+
+  return formatDate;
 };
 
-export const YEARS = getYearsFromCurrentTo();
+export const isValidDatePart = (
+  value: string,
+  part: 'day' | 'month',
+): boolean => {
+  const number = parseInt(value, 10);
+  if (part === 'day') {
+    return number >= 1 && number <= 31;
+  }
+  if (part === 'month') {
+    return number >= 1 && number <= 12;
+  }
+  return false;
+};

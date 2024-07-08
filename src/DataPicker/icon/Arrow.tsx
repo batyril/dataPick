@@ -1,4 +1,4 @@
-export function Arrow({ className, ...props }: { className: string }) {
+export function ArrowIcon({ className, ...props }: { className: string }) {
   return (
     <svg
       className={className}

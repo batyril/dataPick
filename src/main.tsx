@@ -5,6 +5,6 @@ import DataPicker from './DataPicker/DataPicker.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <DataPicker />
+    <DataPicker minYear={1992} />
   </React.StrictMode>,
 );

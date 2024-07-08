@@ -1,10 +1,6 @@
-import { Dispatch, SetStateAction } from 'react';
+import { ICalendarProps } from '../types.ts';
 
-export function Calendar({
-  setIsCalendarOpen,
-}: {
-  setIsCalendarOpen: Dispatch<SetStateAction<boolean>>;
-}) {
+export function CalendarIcon({ setIsCalendarOpen }: ICalendarProps) {
   const handleClick = () => {
     setIsCalendarOpen((open: boolean) => !open);
   };
