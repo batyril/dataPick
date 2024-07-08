@@ -1,6 +1,6 @@
-import { CaptionProps, useNavigation } from 'react-day-picker';
-import styles from '../DataPicker.module.scss';
 import clsx from 'clsx';
+import styles from '../DataPicker.module.scss';
+import { CaptionProps, useNavigation } from 'react-day-picker';
 import { ICaptionProps } from '../types.ts';
 import { getYearsFromCurrentTo, MONTHS } from '../helper.ts';
 import { CaptionButton } from './CaptionButton.tsx';
@@ -61,10 +61,16 @@ export function Caption({
         />
       </div>
 
-      <CaptionList isDropdownOpen={isYearDropdownOpen}>
+      <CaptionList
+        isDropdownOpen={isYearDropdownOpen}
+        selectedIndex={getYearsFromCurrentTo(minYear, maxYear).indexOf(
+          selectedYear,
+        )}
+      >
         {getYearsFromCurrentTo(minYear, maxYear).map((year) => (
           <li
             key={year}
+            tabIndex={-1}
             className={clsx({ [styles.selected]: year === selectedYear })}
             onClick={() => handleYearSelect(year)}
           >
@@ -73,10 +79,14 @@ export function Caption({
         ))}
       </CaptionList>
 
-      <CaptionList isDropdownOpen={isMonthDropdownOpen}>
+      <CaptionList
+        isDropdownOpen={isMonthDropdownOpen}
+        selectedIndex={selectedMonth}
+      >
         {MONTHS.map((month, index) => (
           <li
             key={index}
+            tabIndex={-1}
             className={clsx({ [styles.selected]: index === selectedMonth })}
             onClick={() => handleMonthSelect(index)}
           >
